@@ -31,7 +31,7 @@ app.use((req, res, next) => {
     next()
 })
 
-app.set('port', (5000 || process.env.PORT))
+app.set('port', (process.env.PORT || 5000))
 
 console.log(process.env.NODE_ENV);
 
