@@ -4,6 +4,12 @@ This app demonstrates how to use ReactJS, Pusher, and Service Worker to build a 
 
 [View tutorial](https://pusher.com/tutorials/pwa-react)
 
+## MY CHANGES
+- wrote start & postbuild scripts to deploy to Heroku in package.json
+- wrote script to see lighthouse report for current build folder
+- added dotenv to load app key secrets at runtime
+
+
 ## How to run this app
 
 1. Clone the repo - `https://github.com/yomete/pushercoins`
