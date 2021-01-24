@@ -49,8 +49,9 @@ class Today extends Component {
 		if (!navigator.onLine) {
 			return this.restoreStateFromLocalStorage();
 		}
-		this.pusher = new Pusher('APP_KEY', {
-			cluster: 'YOUR_CLUSTER',
+		const { APP_KEY, CLUSTER } = process.env;
+		this.pusher = new Pusher(APP_KEY, {
+			cluster: CLUSTER,
 			encrypted: true
 		});
 		this.prices = this.pusher.subscribe('coin-prices');

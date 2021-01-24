@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
@@ -5,11 +6,12 @@ const app = express()
 const Pusher = require('pusher')
 
 const pusher = new Pusher({
-    appId: 'APP_ID',
-    key: 'YOUR_KEY',
-    secret: 'YOUR_SECRET',
-    cluster: 'YOUR_CLUSTER',
-    encrypted: true
+    appId: process.env.APP_ID,
+    key: process.env.KEY,
+    secret: process.env.SECRET,
+    cluster: process.env.CLUSTER,
+    encrypted: true,
+    useTLS: true
 })
 
 app.use(bodyParser.json())
@@ -31,12 +33,29 @@ app.use((req, res, next) => {
 
 app.set('port', (5000))
 
-app.get('/', (req, res) => {
-    res.send('Welcome')
-})
+console.log(process.env.NODE_ENV);
+
+// HEROKU - serve build folder
+if (process.env.NODE_ENV === 'production') {
+    const buildFolder = path.join(__dirname, '../', 'client/build')
+    // load the value in the server
+    const { API_URL, CLUSTER } = process.env;
+    // treat the index.html as a template and substitute the value
+    // at runtime
+    app.set('views', path.join(__dirname, buildFolder));
+    app.engine('html', require('ejs').renderFile);
+    app.use(
+        '/static',
+        express.static(path.join(__dirname, `${buildFolder}/static`)),
+    );
+    // Handle React routing, return all requests to React app
+    app.get('*', function (req, res) {
+        res.render('index.html', { API_URL, CLUSTER })
+    });
+}
 
 app.post('/prices/new', (req, res) => {
-    pusher.trigger( 'coin-prices', 'prices', {
+    pusher.trigger('coin-prices', 'prices', {
         prices: req.body.prices
     });
     res.sendStatus(200);
