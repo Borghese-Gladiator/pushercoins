@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
+    "dotenv": "^8.2.0",
     "express": "^4.15.3",
     "moment": "^2.18.1",
     "npm-run-all": "^4.1.1",
@@ -15,17 +16,27 @@
     "react-scripts": "1.0.10"
   },
   "scripts": {
-    "start:client": "react-scripts start",
-    "start:server": "nodemon server.js",
-    "start": "npm-run-all --parallel start:*",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "client-dev": "cd client && npm start",
+    "server-dev": "nodemon server.js",
+    "client-build": "react-scripts build",
+    "client-test": "react-scripts test --env=jsdom",
+    "client-eject": "react-scripts eject",
+    "start": "node server.js",
+    "heroku-postbuild": "npm run client-build",
+    "lighthouse-report": "npm run build && concurrently \"npm run serve_build\" \"npm run lighthouse\"",
+    "serve-build": "serve -s build",
+    "lighthouse": "lighthouse http://localhost:5000 --output html --view --output-path=./lighthouse_report.html"
   },
   "proxy": "http://localhost:5000",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
   "main": "server.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "lighthouse": "^7.0.0",
+    "nodemon": "^2.0.7",
+    "serve": "^11.3.2"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
