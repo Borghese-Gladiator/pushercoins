@@ -22,7 +22,7 @@
     "client-test": "react-scripts test --env=jsdom",
     "client-eject": "react-scripts eject",
     "server-dev": "nodemon server.js",
-    "start": "node -r dotenv/config server.js",
+    "start": "node server.js",
     "heroku-postbuild": "npm run client-build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lighthouse-report": "npm run build && concurrently \"npm run serve_build\" \"npm run lighthouse\"",
