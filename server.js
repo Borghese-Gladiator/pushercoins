@@ -1,4 +1,7 @@
-require('dotenv').config()
+// preloaded env variables
+const { PORT, APP_ID, KEY, SECRET, CLUSTER } = require('./config');
+console.log(`Your port is ${port}`); // 8626
+
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
@@ -6,10 +9,10 @@ const app = express()
 const Pusher = require('pusher')
 
 const pusher = new Pusher({
-    appId: process.env.APP_ID,
-    key: process.env.KEY,
-    secret: process.env.SECRET,
-    cluster: process.env.CLUSTER,
+    appId: APP_ID,
+    key: KEY,
+    secret: SECRET,
+    cluster: CLUSTER,
     encrypted: true,
     useTLS: true
 })
@@ -31,26 +34,15 @@ app.use((req, res, next) => {
     next()
 })
 
-app.set('port', (process.env.PORT || 5000))
-
-console.log(process.env.NODE_ENV);
+app.set('port', (PORT || 5000))
 
 // HEROKU - serve build folder
 if (process.env.NODE_ENV === 'production') {
-    const buildFolder = path.join(__dirname, '../', 'client/build')
-    // load the value in the server
-    const { API_URL, CLUSTER } = process.env;
-    // treat the index.html as a template and substitute the value
-    // at runtime
-    app.set('views', path.join(__dirname, buildFolder));
-    app.engine('html', require('ejs').renderFile);
-    app.use(
-        '/static',
-        express.static(path.join(__dirname, `${buildFolder}/static`)),
-    );
+    // Serve any static files
+    app.use(express.static(path.join(__dirname, 'build')));
     // Handle React routing, return all requests to React app
     app.get('*', function (req, res) {
-        res.render('index.html', { API_URL, CLUSTER })
+        res.sendFile(path.join(__dirname,' build', 'index.html'));
     });
 }
 
