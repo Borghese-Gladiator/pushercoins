@@ -8,7 +8,10 @@ This app demonstrates how to use ReactJS, Pusher, and Service Worker to build a 
 - wrote start & postbuild scripts to deploy to Heroku in package.json
 - wrote script to see lighthouse report for current build folder
 - added dotenv to load app key secrets at runtime
-
+- changed React client to load app key secrets at runtime
+    - env vars must be prepended with REACT_APP* (eg: REACT_APP_KEY for env variable KEY)
+- add source-map-explorer to analyze bundle.js
+- preload env variables (remove references to dotenv)
 
 ## How to run this app
 
