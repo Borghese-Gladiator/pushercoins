@@ -4,6 +4,12 @@ import axios from 'axios'
 import Pusher from 'pusher-js'
 import { CryptoPrice } from "./CryptoPrice";
 
+// when in dev - use API_URL
+// when in production - use REACT_APP_API_URL
+
+// const REACT_APP_KEY = process.env.NODE_ENV === 'production' ? window.APP_KEY : process.env.REACT_APP_KEY;
+// const REACT_APP_CLUSTER = process.env.NODE_ENV === 'production' ? window.CLUSTER : process.env.REACT_APP_CLUSTER;
+
 class Today extends Component {
 	/**
 	 * If you're not using the props to initialize your state, you can
@@ -49,9 +55,9 @@ class Today extends Component {
 		if (!navigator.onLine) {
 			return this.restoreStateFromLocalStorage();
 		}
-		const { APP_KEY, CLUSTER } = process.env;
-		this.pusher = new Pusher(APP_KEY, {
-			cluster: CLUSTER,
+		console.log(process.env);
+		this.pusher = new Pusher('d7ca9cb93388edbd2b0e', {
+			cluster: 'us2',
 			encrypted: true
 		});
 		this.prices = this.pusher.subscribe('coin-prices');
