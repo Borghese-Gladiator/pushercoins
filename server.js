@@ -1,6 +1,5 @@
 // preloaded env variables
 const { PORT, APP_ID, KEY, SECRET, CLUSTER } = require('./config');
-console.log(`Your port is ${port}`); // 8626
 
 const express = require('express')
 const path = require('path')
